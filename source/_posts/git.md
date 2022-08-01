@@ -1,3 +1,17 @@
+---
+mathjax: true
+title: Git命令讲解
+date: 2022-8-2
+categories:
+- Git
+tags:
+- Git
+---
+
+Git 常用命令说明
+
+<!--more-->
+
 # Git
 
 ## 初始化
