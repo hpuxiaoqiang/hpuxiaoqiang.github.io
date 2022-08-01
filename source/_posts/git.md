@@ -41,6 +41,7 @@ git commit -m "Message"
 ```git
 git status
 ```
+
 对比文件差异(工作区和暂存区)，若暂存区为空，则对比仓库的
 查看暂存区和仓库差异
 查看工作区和仓库的差异
@@ -84,26 +85,14 @@ git reflog
 
 工作区有一个隐藏目录`.git`，这个不算工作区，而是Git的版本库。
 Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支`master`，以及指向`master`的一个指针叫`HEAD`。
-<!--->
-自建github图床的使用
-![stage1](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png)
 
-![stage2](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png)
-<!--->
-<!--->
-![图 1](image/stage1.png)
-<!--->
 ![stage1](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png)
 第一步是用`git add`把文件添加进去，实际上就是把文件修改添加到暂存区；
 第二步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支。
-<!--->
-![图 2](image/stage2.png)
-<!--->
+
 ![stage2](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png)
 一旦提交后，如果你又没有对工作区做任何修改，那么工作区就是“干净”的：
-<!--->
-![图 3](image/stage3.png)
-<!--->
+
 ![stage3](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage3.png)  
 
 ### 管理修改
