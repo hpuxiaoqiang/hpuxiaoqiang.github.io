@@ -165,6 +165,122 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/02/git/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/assets/icon/face.png">
+      <meta itemprop="name" content="HpuXiaoqiang">
+      <meta itemprop="description" content="湖北工业大学20级电子信息研究生。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HpuXiaoQiang'sBlog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/08/02/git/" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-08-02 05:15:47 / 修改时间：05:15:22" itemprop="dateCreated datePublished" datetime="2022-08-02T05:15:47+08:00">2022-08-02</time>
+            </span>
+
+          
+          <br/>
+          
+          <span title="post.wordcount">
+              <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>
+              全文共859字
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span title="post.min2read">
+            <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span>
+              阅读预计：3分钟
+          </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当前文件夹创建一个git仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+<p>添加文档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add &quot;file name&quot;</span><br></pre></td></tr></table></figure>
+<p>提交文档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;Message&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="时光机穿梭"><a href="#时光机穿梭" class="headerlink" title="时光机穿梭"></a>时光机穿梭</h2><p>查看库状态(工作区)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+<p>对比文件差异(工作区和暂存区)，若暂存区为空，则对比仓库的<br>查看暂存区和仓库差异<br>查看工作区和仓库的差异</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff &quot;file name&quot;</span><br><span class="line">git diff --cached </span><br><span class="line">git diff HEAD </span><br></pre></td></tr></table></figure>
+<h3 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h3><p>查看日志</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br><span class="line">git log --pretty=online</span><br></pre></td></tr></table></figure>
+<p>返回到前一个版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<p>返回到指定版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &quot;CommmitID&quot;</span><br></pre></td></tr></table></figure>
+<p>查看每一次执行的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+<h3 id="工作区和暂存区"><a href="#工作区和暂存区" class="headerlink" title="工作区和暂存区"></a>工作区和暂存区</h3><h4 id="版本库"><a href="#版本库" class="headerlink" title="版本库"></a>版本库</h4><p>工作区有一个隐藏目录<code>.git</code>，这个不算工作区，而是Git的版本库。<br>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支<code>master</code>，以及指向<code>master</code>的一个指针叫<code>HEAD</code>。<br>&lt;!—-&gt;<br>自建github图床的使用<br><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png" alt="stage1"></p>
+<p><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png" alt="stage2"><br><!--->
+<!---><br><img src="image/stage1.png" alt="图 1"><br><!--->
+![stage1](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png)
+第一步是用`git add`把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+<!---><br><img src="image/stage2.png" alt="图 2"><br><!--->
+![stage2](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png)
+一旦提交后，如果你又没有对工作区做任何修改，那么工作区就是“干净”的：
+<!---><br><img src="image/stage3.png" alt="图 3"><br>&lt;!—-&gt;<br><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage3.png" alt="stage3">  </p>
+<h3 id="管理修改"><a href="#管理修改" class="headerlink" title="管理修改"></a>管理修改</h3><p>注意如下的操作流程中：</p>
+<p>第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git commit</code></p>
+<p>Git管理的是修改，当你用<code>git add</code>命令后，在工作区的第一次修改被放入暂存区，准备提交，但是，在工作区的第二次修改并没有放入暂存区，所以，<code>git commit</code>只负责把暂存区的修改提交了，也就是第一次的修改被提交了，第二次的修改不会被提交。因此修改后需要先提交到暂存区中。</p>
+<h3 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h3><p><strong>情况1</strong>：在工作区做了修改，并未添加到暂存区，想撤销工作区的修改，用 <code>git restore --worktree &quot;file name&quot;</code>;</p>
+<p><strong>情况2</strong>：在工作区做了修改，并用<code>git add</code>添加到了暂存区，未提交；想撤销，分两步，1.先撤销暂存区的修改，用 <code>git restore --staged &quot;file name&quot;</code>, 2.然后参考情况1撤销工作区的修改；</p>
+<p><strong>情况3</strong>：在工作区做了修改，且<code>git add</code>、<code>git commit</code>添加并提交了内容，想撤销本次提交，直接用 <code>git reset --hard HEAD^</code>回退版本，即可保证工作区，暂存区，版本库都是上次的内容。从master同时恢复工作区和暂存区,<code>git restore --source=HEAD --staged --worktree &quot;file name&quot;</code></p>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><p>如果直接从文件夹里面把文件删除了，工作区和版本库就不一致了，<code>git status</code>命令会立刻告诉你哪些文件被删除了.现在有两种情况：</p>
+<ul>
+<li><p>确实要从版本库中删除该文件，那就用命令<code>git rm &quot;file name&quot;</code>删掉，并且<code>git commit</code></p>
+</li>
+<li><p>删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本<code>git restore -- &quot;file name&quot;</code></p>
+</li>
+</ul>
+<p>从来没有被添加到版本库就被删除的文件，是无法恢复的！</p>
+
+      
+    </div>
+    
+    <div>
+      
+    </div>
+    
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/29/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80-%E8%8C%83%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -988,7 +1104,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1047,7 +1163,7 @@
 
   <br/>
   <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>
-  <span class="post-count">全站共 5.2k 字</span>
+  <span class="post-count">全站共 6k 字</span>
 
         
 <div class="busuanzi-count">

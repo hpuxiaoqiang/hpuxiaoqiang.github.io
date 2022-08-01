@@ -20,26 +20,27 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="介绍拉普拉斯分布和高斯分布">
+  <meta name="description" content="Git初始化当前文件夹创建一个git仓库 1git init 添加文档 1git add &quot;file name&quot; 提交文档 1git commit -m &quot;Message&quot; 时光机穿梭查看库状态(工作区) 1git status 对比文件差异(工作区和暂存区)，若暂存区为空，则对比仓库的查看暂存区和仓库差异查看工作区和仓库的差异 123git diff &amp;q">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常见的概率分布函数">
-<meta property="og:url" content="http://example.com/2021/10/22/%E5%B8%B8%E8%A7%81%E7%9A%84%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:title" content="HpuXiaoQiang&#39;sBlog">
+<meta property="og:url" content="http://example.com/2022/08/02/git/index.html">
 <meta property="og:site_name" content="HpuXiaoQiang&#39;sBlog">
-<meta property="og:description" content="介绍拉普拉斯分布和高斯分布">
+<meta property="og:description" content="Git初始化当前文件夹创建一个git仓库 1git init 添加文档 1git add &quot;file name&quot; 提交文档 1git commit -m &quot;Message&quot; 时光机穿梭查看库状态(工作区) 1git status 对比文件差异(工作区和暂存区)，若暂存区为空，则对比仓库的查看暂存区和仓库差异查看工作区和仓库的差异 123git diff &amp;q">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/assets/2021-10-25/lapDistributionPlot.png">
-<meta property="og:image" content="http://example.com/assets/2021-10-25/lapCDF.png">
-<meta property="og:image" content="http://example.com/assets/2021-10-25/GaussianDistribution.png">
-<meta property="og:image" content="http://example.com/assets/2021-10-25/GaussianCDF.png">
-<meta property="og:image" content="http://example.com/assets/2021-10-25/LapVsGas.png">
-<meta property="article:published_time" content="2021-10-22T03:55:50.000Z">
-<meta property="article:modified_time" content="2021-10-28T04:07:26.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png">
+<meta property="og:image" content="http://example.com/2022/08/02/git/image/stage1.png">
+<meta property="og:image" content="http://example.com/2022/08/02/git/image/stage2.png">
+<meta property="og:image" content="http://example.com/2022/08/02/git/image/stage3.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage3.png">
+<meta property="article:published_time" content="2022-08-01T21:15:47.903Z">
+<meta property="article:modified_time" content="2022-08-01T21:15:22.173Z">
 <meta property="article:author" content="HpuXiaoqiang">
-<meta property="article:tag" content="概率论">
+<meta property="article:tag" content="差分隐私">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/assets/2021-10-25/lapDistributionPlot.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png">
 
-<link rel="canonical" href="http://example.com/2021/10/22/%E5%B8%B8%E8%A7%81%E7%9A%84%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0/">
+<link rel="canonical" href="http://example.com/2022/08/02/git/">
 
 
 <script id="page-configurations">
@@ -52,7 +53,7 @@
   };
 </script>
 
-  <title>常见的概率分布函数 | HpuXiaoQiang'sBlog</title>
+  <title> | HpuXiaoQiang'sBlog</title>
   
 
 
@@ -174,7 +175,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/10/22/%E5%B8%B8%E8%A7%81%E7%9A%84%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/08/02/git/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/assets/icon/face.png">
@@ -187,7 +188,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          常见的概率分布函数
+          
         </h1>
 
         <div class="post-meta">
@@ -196,24 +197,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2021-10-22 11:55:50" itemprop="dateCreated datePublished" datetime="2021-10-22T11:55:50+08:00">2021-10-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-28 12:07:26" itemprop="dateModified" datetime="2021-10-28T12:07:26+08:00">2021-10-28</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">数学基础</span></a>
-                </span>
+              <time title="创建时间：2022-08-02 05:15:47 / 修改时间：05:15:22" itemprop="dateCreated datePublished" datetime="2022-08-02T05:15:47+08:00">2022-08-02</time>
             </span>
 
           
@@ -228,12 +214,12 @@
           
           <span title="post.wordcount">
               <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>
-              全文共103字
+              全文共859字
           </span>
           <span class="post-meta-divider">|</span>
           <span title="post.min2read">
             <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span>
-              阅读预计：1分钟
+              阅读预计：3分钟
           </span>
           
 
@@ -246,56 +232,48 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>介绍拉普拉斯分布和高斯分布</p>
-<span id="more"></span>
-<h1 id="拉普拉斯分布（LaplaceDistribution）"><a href="#拉普拉斯分布（LaplaceDistribution）" class="headerlink" title="拉普拉斯分布（LaplaceDistribution）"></a>拉普拉斯分布（LaplaceDistribution）</h1><p><strong>期望：</strong>$\mu$</p>
-<p><strong>方差：</strong>$2\lambda^2$</p>
-<h2 id="概率密度函数"><a href="#概率密度函数" class="headerlink" title="概率密度函数"></a>概率密度函数</h2><script type="math/tex; mode=display">
-f(x\mid \mu,\lambda)=\frac{1}{2\lambda}e^{ -\frac{\mid x-\mu \mid} {\lambda} }</script><p>其中$\mu,\lambda$为常数，$\mu$被称为位置参数，$\lambda$被称为尺度参数。</p>
-<center>
-    <img src="/assets/2021-10-25/lapDistributionPlot.png" width="75%" height="75%"/>
-</center>
-
-
-<h2 id="累计分布函数"><a href="#累计分布函数" class="headerlink" title="累计分布函数"></a>累计分布函数</h2><script type="math/tex; mode=display">
-F(x)=Pr[X\leq x]=\int_{-\infty}^{x}f(t)dt=\left\{
-\begin{aligned}
-\frac{1}{2}\exp(\frac{x-\mu}{\lambda})&\,&x<\mu&\\
-1-\frac{1}{2}\exp(\frac{\mu-x}{\lambda})&\,&x\geq \mu&
-\end{aligned}
-\right.</script><center>
-    <img src="/assets/2021-10-25/lapCDF.png" width="75%" height="75%"/>
-    </br>
-    拉普拉斯分布累计分布函数
-</center>
-
-
-
-<h1 id="高斯分布"><a href="#高斯分布" class="headerlink" title="高斯分布"></a>高斯分布</h1><p>高斯分布又叫正态分布。若随机变量为$\mu$、方差为$\sigma^2$的正态分布，记为$N(\mu,\sigma^2)$。</p>
-<h2 id="概率密度函数-1"><a href="#概率密度函数-1" class="headerlink" title="概率密度函数"></a>概率密度函数</h2><script type="math/tex; mode=display">
-f(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})</script><p>其中$\mu,\sigma$为常数，$\mu$被称为位置参数，$\sigma$被称为尺度参数。</p>
-<p>当$\mu=0,\sigma=1$时，正态分布就是<strong>标准正态分布。</strong></p>
-<center>
-    <img src="/assets/2021-10-25/GaussianDistribution.png" width="75%" height="75%"/>
-    </br>
-    高斯分布概率密度函数
-</center>
-
-
-<h2 id="累计分布函数-1"><a href="#累计分布函数-1" class="headerlink" title="累计分布函数"></a>累计分布函数</h2><center>
-    <img src="/assets/2021-10-25/GaussianCDF.png" width="75%" height="75%"/>
-    </br>
-    高斯分布累计分布函数
-</center>
-
-
-
-
-<h1 id="Laplace-VS-Gaussian"><a href="#Laplace-VS-Gaussian" class="headerlink" title="Laplace VS Gaussian"></a>Laplace VS Gaussian</h1><center>
-    <img src="/assets/2021-10-25/LapVsGas.png" width="75%" height="75%"/>
-    </br>
-    拉普拉斯分布对比高斯分布
-</center>
+        <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>当前文件夹创建一个git仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+<p>添加文档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add &quot;file name&quot;</span><br></pre></td></tr></table></figure>
+<p>提交文档</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;Message&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="时光机穿梭"><a href="#时光机穿梭" class="headerlink" title="时光机穿梭"></a>时光机穿梭</h2><p>查看库状态(工作区)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+<p>对比文件差异(工作区和暂存区)，若暂存区为空，则对比仓库的<br>查看暂存区和仓库差异<br>查看工作区和仓库的差异</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git diff &quot;file name&quot;</span><br><span class="line">git diff --cached </span><br><span class="line">git diff HEAD </span><br></pre></td></tr></table></figure>
+<h3 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h3><p>查看日志</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br><span class="line">git log --pretty=online</span><br></pre></td></tr></table></figure>
+<p>返回到前一个版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+<p>返回到指定版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard &quot;CommmitID&quot;</span><br></pre></td></tr></table></figure>
+<p>查看每一次执行的命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+<h3 id="工作区和暂存区"><a href="#工作区和暂存区" class="headerlink" title="工作区和暂存区"></a>工作区和暂存区</h3><h4 id="版本库"><a href="#版本库" class="headerlink" title="版本库"></a>版本库</h4><p>工作区有一个隐藏目录<code>.git</code>，这个不算工作区，而是Git的版本库。<br>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支<code>master</code>，以及指向<code>master</code>的一个指针叫<code>HEAD</code>。<br>&lt;!—-&gt;<br>自建github图床的使用<br><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png" alt="stage1"></p>
+<p><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png" alt="stage2"><br><!--->
+<!---><br><img src="image/stage1.png" alt="图 1"><br><!--->
+![stage1](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage1.png)
+第一步是用`git add`把文件添加进去，实际上就是把文件修改添加到暂存区；
+第二步是用`git commit`提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+<!---><br><img src="image/stage2.png" alt="图 2"><br><!--->
+![stage2](https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage2.png)
+一旦提交后，如果你又没有对工作区做任何修改，那么工作区就是“干净”的：
+<!---><br><img src="image/stage3.png" alt="图 3"><br>&lt;!—-&gt;<br><img src="https://raw.githubusercontent.com/hpuxiaoqiang/picbase/main/stage3.png" alt="stage3">  </p>
+<h3 id="管理修改"><a href="#管理修改" class="headerlink" title="管理修改"></a>管理修改</h3><p>注意如下的操作流程中：</p>
+<p>第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git commit</code></p>
+<p>Git管理的是修改，当你用<code>git add</code>命令后，在工作区的第一次修改被放入暂存区，准备提交，但是，在工作区的第二次修改并没有放入暂存区，所以，<code>git commit</code>只负责把暂存区的修改提交了，也就是第一次的修改被提交了，第二次的修改不会被提交。因此修改后需要先提交到暂存区中。</p>
+<h3 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h3><p><strong>情况1</strong>：在工作区做了修改，并未添加到暂存区，想撤销工作区的修改，用 <code>git restore --worktree &quot;file name&quot;</code>;</p>
+<p><strong>情况2</strong>：在工作区做了修改，并用<code>git add</code>添加到了暂存区，未提交；想撤销，分两步，1.先撤销暂存区的修改，用 <code>git restore --staged &quot;file name&quot;</code>, 2.然后参考情况1撤销工作区的修改；</p>
+<p><strong>情况3</strong>：在工作区做了修改，且<code>git add</code>、<code>git commit</code>添加并提交了内容，想撤销本次提交，直接用 <code>git reset --hard HEAD^</code>回退版本，即可保证工作区，暂存区，版本库都是上次的内容。从master同时恢复工作区和暂存区,<code>git restore --source=HEAD --staged --worktree &quot;file name&quot;</code></p>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><p>如果直接从文件夹里面把文件删除了，工作区和版本库就不一致了，<code>git status</code>命令会立刻告诉你哪些文件被删除了.现在有两种情况：</p>
+<ul>
+<li><p>确实要从版本库中删除该文件，那就用命令<code>git rm &quot;file name&quot;</code>删掉，并且<code>git commit</code></p>
+</li>
+<li><p>删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本<code>git restore -- &quot;file name&quot;</code></p>
+</li>
+</ul>
+<p>从来没有被添加到版本库就被删除的文件，是无法恢复的！</p>
 
     </div>
     
@@ -315,23 +293,16 @@ f(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})</script><p>�
     
 
       <footer class="post-footer">
-          
-          <div class="post-tags">
-              <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/" rel="tag"><i class="fa fa-tag"></i> 概率论</a>
-          </div>
         
 
 
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/10/13/%E6%A6%82%E7%8E%87%E8%AE%BA%E5%9F%BA%E7%A1%80/" rel="prev" title="概率论基础">
-      <i class="fa fa-chevron-left"></i> 概率论基础
+    <a href="/2021/10/29/%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80-%E8%8C%83%E6%95%B0/" rel="prev" title="数学基础-范数">
+      <i class="fa fa-chevron-left"></i> 数学基础-范数
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/10/28/DP%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" rel="next" title="DP基本概念">
-      DP基本概念 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -390,7 +361,7 @@ f(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})</script><p>�
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%88%86%E5%B8%83%EF%BC%88LaplaceDistribution%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">拉普拉斯分布（LaplaceDistribution）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">概率密度函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%AF%E8%AE%A1%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">累计分布函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%96%AF%E5%88%86%E5%B8%83"><span class="nav-number">2.</span> <span class="nav-text">高斯分布</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E7%8E%87%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0-1"><span class="nav-number">2.1.</span> <span class="nav-text">概率密度函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B4%AF%E8%AE%A1%E5%88%86%E5%B8%83%E5%87%BD%E6%95%B0-1"><span class="nav-number">2.2.</span> <span class="nav-text">累计分布函数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Laplace-VS-Gaussian"><span class="nav-number">3.</span> <span class="nav-text">Laplace VS Gaussian</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git"><span class="nav-number">1.</span> <span class="nav-text">Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%97%B6%E5%85%89%E6%9C%BA%E7%A9%BF%E6%A2%AD"><span class="nav-number">1.2.</span> <span class="nav-text">时光机穿梭</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80"><span class="nav-number">1.2.1.</span> <span class="nav-text">版本回退</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%92%8C%E6%9A%82%E5%AD%98%E5%8C%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">工作区和暂存区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%BA%93"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">版本库</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E4%BF%AE%E6%94%B9"><span class="nav-number">1.2.3.</span> <span class="nav-text">管理修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%92%A4%E9%94%80%E4%BF%AE%E6%94%B9"><span class="nav-number">1.2.4.</span> <span class="nav-text">撤销修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">1.2.5.</span> <span class="nav-text">删除文件</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -537,59 +508,6 @@ f(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp(-\frac{(x-\mu)^2}{2\sigma^2})</script><p>�
   
 
   
-      
-
-<script>
-  if (typeof MathJax === 'undefined') {
-    window.MathJax = {
-      loader: {
-        source: {
-          '[tex]/amsCd': '[tex]/amscd',
-          '[tex]/AMScd': '[tex]/amscd'
-        }
-      },
-      tex: {
-        inlineMath: {'[+]': [['$', '$']]},
-        tags: 'ams'
-      },
-      options: {
-        renderActions: {
-          findScript: [10, doc => {
-            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
-              const display = !!node.type.match(/; *mode=display/);
-              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
-              const text = document.createTextNode('');
-              node.parentNode.replaceChild(text, node);
-              math.start = {node: text, delim: '', n: 0};
-              math.end = {node: text, delim: '', n: 0};
-              doc.math.push(math);
-            });
-          }, '', false],
-          insertedScript: [200, () => {
-            document.querySelectorAll('mjx-container').forEach(node => {
-              let target = node.parentNode;
-              if (target.nodeName.toLowerCase() === 'li') {
-                target.parentNode.classList.add('has-jax');
-              }
-            });
-          }, '', false]
-        }
-      }
-    };
-    (function () {
-      var script = document.createElement('script');
-      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
-      script.defer = true;
-      document.head.appendChild(script);
-    })();
-  } else {
-    MathJax.startup.document.state(0);
-    MathJax.texReset();
-    MathJax.typeset();
-  }
-</script>
-
-    
 
   
 
