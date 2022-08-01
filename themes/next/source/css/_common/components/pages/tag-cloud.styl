@@ -1,0 +1,26 @@
+.tag-cloud {
+  text-align: center;
+.tag-cloud-tags a:before 
+{
+    content: '🏷️';
+	}
+  a {
+    display: inline-block;
+    /*    margin: 10px;*/
+    cursor: pointer;
+    border-radius: 6px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin: 8px 5px 0px 0px;
+    border-bottom: 1px solid #999
+    &:hover {
+      color: $link-hover-color !important;
+      background-color:yellow;
+      /*background:transparent;*/
+      box-shadow: 0px 5px 15px 0px rgba(0,0,0,0.4);
+      transform: scale(1.1);
+      /* box-shadow: 10px 10px 15px 2px rgba(0,0,0,.12), 0 0 6px 0 rgba(104, 104, 105, 0.1); */
+      transition-duration: 0.15s;
+    }
+  }
+}
