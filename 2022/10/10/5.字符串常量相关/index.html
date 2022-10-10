@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon/favicon64.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon/favicon32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon/favicon64.png">
+  <link rel="mask-icon" href="/assets/icon/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="char* 与 char []的区别起源于一次写处理字符串的函数时，使用了char*创建字符串，然后编译运行通过，但是有warning: deprecated conversion from string constant to &#39;char*&#39; [-Wwrite-strings]，然后查了相关资料把这个问题搞懂了。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="char* 与 char []的区别">
+<meta property="og:url" content="http://example.com/2022/10/10/5.%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E7%9B%B8%E5%85%B3/index.html">
+<meta property="og:site_name" content="HpuXiaoQiang&#39;sBlog">
+<meta property="og:description" content="char* 与 char []的区别起源于一次写处理字符串的函数时，使用了char*创建字符串，然后编译运行通过，但是有warning: deprecated conversion from string constant to &#39;char*&#39; [-Wwrite-strings]，然后查了相关资料把这个问题搞懂了。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/assets/2022-10-10/memory.png">
+<meta property="article:published_time" content="2022-10-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-10T11:43:27.721Z">
+<meta property="article:author" content="HpuXiaoqiang">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/assets/2022-10-10/memory.png">
+
+<link rel="canonical" href="http://example.com/2022/10/10/5.%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E7%9B%B8%E5%85%B3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>char* 与 char []的区别 | HpuXiaoQiang'sBlog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<script src="/live2d-widget/autoload.js"></script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">HpuXiaoQiang'sBlog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">浑水摸鱼中</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/10/10/5.%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E7%9B%B8%E5%85%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/assets/icon/face.png">
+      <meta itemprop="name" content="HpuXiaoqiang">
+      <meta itemprop="description" content="湖北工业大学20级电子信息研究生。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="HpuXiaoQiang'sBlog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          char* 与 char []的区别
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-10-10 00:00:00 / 修改时间：19:43:27" itemprop="dateCreated datePublished" datetime="2022-10-10T00:00:00+08:00">2022-10-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+          <br/>
+          
+          <span title="post.wordcount">
+              <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>
+              全文共1.9k字
+          </span>
+          <span class="post-meta-divider">|</span>
+          <span title="post.min2read">
+            <span class="post-meta-item-icon"><i class="fa fa-clock-o"></i></span>
+              阅读预计：8分钟
+          </span>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="char-与-char-的区别"><a href="#char-与-char-的区别" class="headerlink" title="char* 与 char []的区别"></a>char* 与 char []的区别</h1><p>起源于一次写处理字符串的函数时，使用了<code>char*</code>创建字符串，然后编译运行通过，但是有<code>warning: deprecated conversion from string constant to &#39;char*&#39; [-Wwrite-strings]</code>，然后查了相关资料把这个问题搞懂了。</p>
+<span id="more"></span>
+<h2 id="指针常量与常量指针"><a href="#指针常量与常量指针" class="headerlink" title="指针常量与常量指针"></a>指针常量与常量指针</h2><p>首先，我们需要搞懂指针常量与常量指针的区别</p>
+<h3 id="指针常量"><a href="#指针常量" class="headerlink" title="指针常量"></a>指针常量</h3><p>指针类型的常量</p>
+<p>语法：<code>char* const p;</code></p>
+<p>这里的指针p就是一个指针常量，其特点是</p>
+<ul>
+<li><code>p</code>的指向是不可以修改的</li>
+<li><code>p</code>指向的值是可以修改的</li>
+</ul>
+<p>也就是说<code>const</code>是作用在<code>p</code>上的</p>
+<p>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">    <span class="keyword">char</span> c = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line">    <span class="keyword">char</span>* <span class="keyword">const</span> p = &amp;ch;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ch : &#x27;%c&#x27;, address : %0x\n&quot;</span>,ch,&amp;ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p : &#x27;%c&#x27;, address : %0x\n&quot;</span>,*p,p);</span><br><span class="line">    <span class="comment">//不可以修改p的指向</span></span><br><span class="line">    <span class="comment">// p = &amp;c; //会报错是不可修改的 error: assignment of read-only variable &#x27;p&#x27;</span></span><br><span class="line">    <span class="comment">//但是我们可以直接修改p指向的值</span></span><br><span class="line">    *p = <span class="string">&#x27;m&#x27;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ch : &#x27;%c&#x27;, address : %0x\n&quot;</span>,ch,&amp;ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p : &#x27;%c&#x27;, address : %0x\n&quot;</span>,*p,p);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;c : &#x27;%c&#x27;, address : %0x\n&quot;</span>,c,&amp;c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出</span></span><br><span class="line"><span class="comment">ch : &#x27;a&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">*p : &#x27;a&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">ch : &#x27;m&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">*p : &#x27;m&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">c : &#x27;b&#x27;, address : 6ffe16</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="常量指针"><a href="#常量指针" class="headerlink" title="常量指针"></a>常量指针</h3><p>指向“常量”的指针</p>
+<p>语法：<code>const char *p;</code>或者<code>char const *p;</code></p>
+<p>这里的指针<code>p</code>就是一个常量指针，其特点是</p>
+<ul>
+<li><code>p</code>的指向是可以修改的</li>
+<li><code>p</code>指向的值是不可以修改的</li>
+</ul>
+<p>也就是说<code>const</code>是作用在<code>*p</code>上的<br>例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">    <span class="keyword">char</span> c = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>*  p = &amp;ch;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ch : &#x27;%c&#x27;, address : %0x\n&quot;</span>,ch,&amp;ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p : &#x27;%c&#x27;, address : %0x\n&quot;</span>,*p,p);</span><br><span class="line">    <span class="comment">//可以修改p的指向</span></span><br><span class="line">    p = &amp;c; </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;p的指向修改后\n&quot;</span>);</span><br><span class="line">    <span class="comment">//不可以修改p指向的值</span></span><br><span class="line">    <span class="comment">// *p = &#x27;m&#x27;; //会报错提示我们表达式必须是可修改的左值</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ch : &#x27;%c&#x27;, address : %0x\n&quot;</span>,ch,&amp;ch);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;*p : &#x27;%c&#x27;, address : %0x\n&quot;</span>,*p,p);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;c : &#x27;%c&#x27;, address : %0x\n&quot;</span>,c,&amp;c);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出</span></span><br><span class="line"><span class="comment">ch : &#x27;a&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">*p : &#x27;a&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">p的指向修改后</span></span><br><span class="line"><span class="comment">ch : &#x27;a&#x27;, address : 6ffe17</span></span><br><span class="line"><span class="comment">*p : &#x27;b&#x27;, address : 6ffe16</span></span><br><span class="line"><span class="comment">c : &#x27;b&#x27;, address : 6ffe16</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="字符串常量保存在哪？"><a href="#字符串常量保存在哪？" class="headerlink" title="字符串常量保存在哪？"></a>字符串常量保存在哪？</h2><p>先看例子</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> num = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">char</span> *s = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span>* sa = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sa的地址: 0x%0x\n&quot;</span>, &amp;sa);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sa指向的字符串的地址: 0x%0x\n&quot;</span>, sa);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;static num address: &quot;</span>&lt;&lt;&amp;num&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针s的地址: 0x%0x\n&quot;</span>, &amp;s);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针s指向的字符串的地址: 0x%0x\n&quot;</span>, s);</span><br><span class="line">    <span class="built_in">a</span>();</span><br><span class="line">    <span class="keyword">char</span>* sb = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sb的地址: 0x%0x\n&quot;</span>, &amp;sb);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sb指向的字符串的地址: 0x%0x\n&quot;</span>, sb);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span>* sc = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sc的地址: 0x%0x\n&quot;</span>, &amp;sc);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sc指向的字符串的地址: 0x%0x\n&quot;</span>, sc);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出结果</span></span><br><span class="line"><span class="comment">static num address: 0x469010</span></span><br><span class="line"><span class="comment">指针s的地址: 0x469018</span></span><br><span class="line"><span class="comment">指针s指向的字符串的地址: 0x47e001</span></span><br><span class="line"><span class="comment">指针sa的地址: 0x6ffdd8</span></span><br><span class="line"><span class="comment">指针sa指向的字符串的地址: 0x47e001</span></span><br><span class="line"><span class="comment">指针sb的地址: 0x6ffe18</span></span><br><span class="line"><span class="comment">指针sb指向的字符串的地址: 0x47e001</span></span><br><span class="line"><span class="comment">指针sc的地址: 0x6ffe10</span></span><br><span class="line"><span class="comment">指针sc指向的字符串的地址: 0x47e001</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>说明：在这个程序中，我们在不同的地方都创建了字符串<code>&quot;test&quot;</code>，全局指针变量<code>s</code>,函数<code>a()</code>内的临时指针变量<code>sa</code>，<code>main()</code>函数中的指针变量<code>sb</code>和<code>sc</code>，但是通过输出地址发现它们都指向了同一块内存空间。</p>
+<p>而且结合上面的结果和<code>c++</code>中的内存分区模型，我们可以看出，变量<code>num</code>，<code>s</code>，和<code>&quot;test&quot;</code>都被放在了全局区里面。而<code>sa</code>，sb，<code>sc</code>都放在栈区里面。</p>
+<p>因此，从上面这个程序我们可以看出</p>
+<blockquote>
+<p><strong>一旦有字符串常量在运行期间被创建出来，就会在内存中一直保持到程序结束，当使用相同的字符串常量的时候，不会再创建字符串常量，而是指向之前创建的那个。因此字符串常量是贯穿整个程序的生命周期的。</strong></p>
+</blockquote>
+<h2 id="字符串变量的保存在哪？"><a href="#字符串变量的保存在哪？" class="headerlink" title="字符串变量的保存在哪？"></a>字符串变量的保存在哪？</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *s = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"><span class="keyword">char</span> ss[] = <span class="string">&quot;test&quot;</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">a</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> ssa[] = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* sa = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sa的地址: 0x%0x\n&quot;</span>, &amp;sa);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sa指向的字符串的地址: 0x%0x\n&quot;</span>, sa);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ssa的地址: 0x%0x\n&quot;</span>, &amp;ssa);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针s的地址: 0x%0x\n&quot;</span>, &amp;s);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针s指向的字符串的地址: 0x%0x\n&quot;</span>, s);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ss的地址: 0x%0x\n&quot;</span>, &amp;ss);</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;---&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="comment">// printf(&quot;ss指向的字符串的地址: 0x%0x\n&quot;, ss);</span></span><br><span class="line">    <span class="built_in">a</span>();</span><br><span class="line">    <span class="keyword">char</span> ssb[] = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span>* sb = <span class="string">&quot;test&quot;</span>;</span><br><span class="line">    cout&lt;&lt;<span class="string">&quot;---&quot;</span>&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sb的地址: 0x%0x\n&quot;</span>, &amp;sb);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;指针sb指向的字符串的地址: 0x%0x\n&quot;</span>, sb);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ssb的地址: 0x%0x\n&quot;</span>, ssb);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出</span></span><br><span class="line"><span class="comment">指针s的地址: 0x46a010</span></span><br><span class="line"><span class="comment">指针s指向的字符串的地址: 0x47f001</span></span><br><span class="line"><span class="comment">ss的地址: 0x46a018</span></span><br><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="comment">指针sa的地址: 0x6ffdb8</span></span><br><span class="line"><span class="comment">指针sa指向的字符串的地址: 0x47f001</span></span><br><span class="line"><span class="comment">ssa的地址: 0x6ffdc0</span></span><br><span class="line"><span class="comment">---</span></span><br><span class="line"><span class="comment">指针sb的地址: 0x6ffe08</span></span><br><span class="line"><span class="comment">指针sb指向的字符串的地址: 0x47f001</span></span><br><span class="line"><span class="comment">ssb的地址: 0x6ffe10</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+<p>这里就可以看出变量和字符串常量的区别了。尽管<code>ss</code>,<code>ssa</code>,<code>ssb</code>它们在内容上都是一样的，但是因为是变量，所以都需要单独开辟空间储存。而不能像常量<code>*s</code>，<code>*sa</code>，<code>*sb</code>一样只用一块儿空间。</p>
+<h2 id="关于char"><a href="#关于char" class="headerlink" title="关于char *"></a>关于char *</h2><p>先看例子：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> *s = <span class="string">&quot;1234&quot;</span>;</span><br><span class="line">    <span class="comment">//warning: deprecated conversion from string constant to &#x27;char*&#x27; [-Wwrite-strings]</span></span><br><span class="line">    <span class="comment">//我们也可以通过改为 const char *s = &quot;1234&quot;;变为常量指针来解决</span></span><br><span class="line">    cout&lt;&lt;s&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%0x\n&quot;</span>,s);</span><br><span class="line"><span class="comment">//    s[0] = &#x27;a&#x27;; </span></span><br><span class="line">    <span class="comment">// 有人可能会尝试这样来修改某一个位置上的元素，毕竟我们知道一个字符串的名字就是其字符串的首地址</span></span><br><span class="line">    <span class="comment">// 然而这样做会直接导致程序中断，因为我们的&quot;1234&quot;是常量，而常量是不可以修改的</span></span><br><span class="line">    cout&lt;&lt;s&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line">    s = &amp;ch;</span><br><span class="line">    cout&lt;&lt;*s&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%0x\n&quot;</span>,s);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出</span></span><br><span class="line"><span class="comment">1234</span></span><br><span class="line"><span class="comment">4aa031</span></span><br><span class="line"><span class="comment">1234</span></span><br><span class="line"><span class="comment">a</span></span><br><span class="line"><span class="comment">73fe17</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="关于char-1"><a href="#关于char-1" class="headerlink" title="关于char []"></a>关于char []</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> s[] = <span class="string">&quot;1234&quot;</span>;</span><br><span class="line">    <span class="comment">// 作用上相当于 char * const s; 我们可以修改s指向的值,但不能修改s的指向</span></span><br><span class="line">    cout&lt;&lt;s&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%0x\n&quot;</span>,s);</span><br><span class="line">    s[<span class="number">0</span>] = <span class="string">&#x27;a&#x27;</span>; </span><br><span class="line"></span><br><span class="line">    cout&lt;&lt;s&lt;&lt;endl;</span><br><span class="line">    <span class="keyword">char</span> ch = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="comment">//    s = &amp;ch; //会报错，这是不允许的</span></span><br><span class="line">    cout&lt;&lt;*s&lt;&lt;endl;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%0x\n&quot;</span>,s);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*输出</span></span><br><span class="line"><span class="comment">1234</span></span><br><span class="line"><span class="comment">6ffe10</span></span><br><span class="line"><span class="comment">a234</span></span><br><span class="line"><span class="comment">a</span></span><br><span class="line"><span class="comment">6ffe10</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>目前两种使用方式：</p>
+<ul>
+<li><code>const char* p = &quot;abc&quot;;</code></li>
+</ul>
+<blockquote>
+<p>p可改，*p不可改</p>
+</blockquote>
+<ul>
+<li><code>char s[] = &quot;abc&quot;;</code></li>
+</ul>
+<blockquote>
+<p>s不可改，s[]中的内容可改</p>
+</blockquote>
+<center>
+    <img src="/assets/2022-10-10/memory.png" width="25%" height="25%"/>
+</center>
+
+    </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:16px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+      
+    </div>
+    
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/C/" rel="tag"><i class="fa fa-tag"></i> C++</a>
+          </div>
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/08/02/git/" rel="prev" title="Git命令讲解">
+      <i class="fa fa-chevron-left"></i> Git命令讲解
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#char-%E4%B8%8E-char-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">char* 与 char []的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F%E4%B8%8E%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88"><span class="nav-number">1.1.</span> <span class="nav-text">指针常量与常量指针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E5%B8%B8%E9%87%8F"><span class="nav-number">1.1.1.</span> <span class="nav-text">指针常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F%E6%8C%87%E9%92%88"><span class="nav-number">1.1.2.</span> <span class="nav-text">常量指针</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F%E4%BF%9D%E5%AD%98%E5%9C%A8%E5%93%AA%EF%BC%9F"><span class="nav-number">1.2.</span> <span class="nav-text">字符串常量保存在哪？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%98%E9%87%8F%E7%9A%84%E4%BF%9D%E5%AD%98%E5%9C%A8%E5%93%AA%EF%BC%9F"><span class="nav-number">1.3.</span> <span class="nav-text">字符串变量的保存在哪？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Echar"><span class="nav-number">1.4.</span> <span class="nav-text">关于char *</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Echar-1"><span class="nav-number">1.5.</span> <span class="nav-text">关于char []</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="HpuXiaoqiang"
+      src="/assets/icon/face.png">
+  <p class="site-author-name" itemprop="name">HpuXiaoqiang</p>
+  <div class="site-description" itemprop="description">湖北工业大学20级电子信息研究生。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hpuxiaoqiang" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hpuxiaoqiang" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:hpuxiaoqiang@126.com" title="E-Mail → mailto:hpuxiaoqiang@126.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">HpuXiaoqiang</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+  <br/>
+  <span class="post-meta-item-icon"><i class="fa fa-file-word-o"></i></span>
+  <span class="post-count">全站共 7.9k 字</span>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+</body>
+</html>
